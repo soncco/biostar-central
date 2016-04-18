@@ -1,0 +1,54 @@
+{% extends "starbase.html" %}
+{% load server_tags %}
+{% load humanize %}
+
+{% block page_title %}
+    RSS Feeds
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">RSS Feeds</h3>
+                </div>
+                <div class="panel-body">
+
+                    <p>
+                        Feeds Estandar:
+                    </p>
+
+
+                    <ul>
+                        <li><a href="{% url "latest-feed" %}">Últimos Posts</a> - últimos posts (todos posts)</li>
+                        <li><a href="{% url "post-type" "question" %}">Nuevas preguntas</a> - últimas preguntas</li>
+                        <li><a href="{% url "post-type" "job" %}">Nuevas ofertas de trabajo</a> - últimos trabajos</li>
+                        <li><a href="{% url "planet-feed" %}">Planeta Feed</a> - últimas entradas de blog</li>
+                    </ul>
+
+
+                    <p>
+                        Uso avanzado, múltiples fuentes pueden ser añadidas al feed.
+                    <p>
+
+                    <ul>
+                        <li><a href="{% url "post-type" "blog+job" %}">Seguir posts de diferentes tipos</a>, posts de ciertos tipos:
+                            <code>/feeds/type/job+blog</code>
+                        </li>
+                        <li><a href="{% url "post-feed" "2+4+6" %}">Seguir múltiples posts</a>, respuestas y comentarios añadidos a posts específicos: <code>/feeds/post/2+8+10</code>
+                        </li>
+                        <li><a href="{% url "tag-feed" 'galaxy+bwa+tutorial' %}">Seguir múltiples tags</a>, posts que son etiquetados con uno o más tags:
+                            <code>/feeds/tag/galaxy+bwa+tutorial</code>
+                        </li>
+                        <li><a href="{% url "user-feed" "2+4+6" %}">Seguir múltiples usuarios</a> un feed posteados por estos usuarios:
+                            <code>/feeds/user/2+8+10</code>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

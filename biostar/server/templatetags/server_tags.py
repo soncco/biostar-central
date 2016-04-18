@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import template
 from django.conf import settings
 from django.template import Context, Template
@@ -25,7 +26,7 @@ def get_count(counts, word):
 @register.simple_tag
 def current(request, *urls):
     if request.path in (reverse(url) for url in urls):
-        return "active"
+        return "activo"
     return ''
 
 # The purpose of this is to return a random number
@@ -71,7 +72,7 @@ def on(value):
 def latest(value):
     "Attempts to hide parts of the email"
     print "-" * 10, value
-    return value if value else "Latest"
+    return value if value else "Últimos"
 
 
 @register.filter
@@ -125,26 +126,27 @@ def time_ago(date):
         return ''
     delta = const.now() - date
     if delta < timedelta(minutes=1):
-        return 'just now'
+        return 'ahora mismo'
     elif delta < timedelta(hours=1):
-        unit = pluralize(delta.seconds // 60, "minute")
+        unit = pluralize(delta.seconds // 60, "minuto")
     elif delta < timedelta(days=1):
-        unit = pluralize(delta.seconds // 3600, "hour")
+        unit = pluralize(delta.seconds // 3600, "hora")
     elif delta < timedelta(days=30):
-        unit = pluralize(delta.days, "day")
+        unit = pluralize(delta.days, "día")
     elif delta < timedelta(days=90):
-        unit = pluralize(int(delta.days / 7), "week")
+        unit = pluralize(int(delta.days / 7), "semana")
     elif delta < timedelta(days=730):
-        unit = pluralize(int(delta.days / 30), "month")
+        unit = pluralize(int(delta.days / 30), "mese")
     else:
         diff = delta.days / 365.0
-        unit = '%0.1f years' % diff
-    return "%s ago" % unit
+        unit = '%0.1f años' % diff
+    #return "%s ago" % unit
+    return "%s " % unit
 
 
 @register.simple_tag
 def last_action(post):
-    action = "written"
+    action = "escrito"
     return "%s" % action
 
 
@@ -159,13 +161,13 @@ def active(x, y):
 def boxclass(post):
     # Create the css class for each row
     if post.has_accepted:
-        style = "accepted"
+        style = "aceptado"
     elif post.reply_count > 0:
-        style = "answered"
+        style = "respondido"
     elif post.comment_count > 0:
-        style = "commented"
+        style = "comentado"
     else:
-        style = "unanswered"
+        style = "sin responder"
     return style
 
 

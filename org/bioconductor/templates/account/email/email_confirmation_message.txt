@@ -1,0 +1,11 @@
+{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% blocktrans with current_site.name as site_name %}
+
+Bienvenido a {{ site_name }}!
+
+Tu estás ahora a pocos pasos de convertirte en un miembro de nuestra comunidad.
+
+Para verificar tu correo por favor, dale click al enlace abajo.
+
+{{ activate_url }}
+
+{% endblocktrans %}{% endautoescape %}

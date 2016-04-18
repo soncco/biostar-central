@@ -1,0 +1,7 @@
+<b>¡Felicitaciones!</b> Acabas de ganar
+<b><a href="{% url "badge-view" award.badge.id %}">{{ award.badge.name }} <i class="{{ award.badge.icon }}"></i></a></b>
+medalla por el notable logro de: <em>{{ award.badge.desc }}</em>.
+{% if award.context %}
+    Acabas de ganar esto en honor a :{{ award.context|safe }}
+{% endif %}
+

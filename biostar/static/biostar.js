@@ -75,8 +75,8 @@ function add_comment(elem) {
             <div id="wmd-button-bar-2"></div>\
             <textarea class="wmd-input-2" id="wmd-input-2"  name="content" rows="3"></textarea></div> \
         </div>\
-        <div><a class="btn btn-success" href=\'javascript:document.forms["comment-form"].submit()\'><i class="icon-comment"></i> Add comment</a>          \
-        <a class="btn btn-warning pull-right" onclick="javascript:obj=$(\'#comment-row\').remove();"><i class="icon-remove"></i> Cancel</a>   </div>       \
+        <div><a class="btn btn-success" href=\'javascript:document.forms["comment-form"].submit()\'><i class="icon-comment"></i> Añadir comentario</a>          \
+        <a class="btn btn-warning pull-right" onclick="javascript:obj=$(\'#comment-row\').remove();"><i class="icon-remove"></i> Cancelar</a>   </div>       \
     </form>            \
     </div>'
     )
@@ -99,7 +99,7 @@ function add_comment_anon(elem) {
     elem.css("background-color", "red");
     $("#comment-box").remove();
     container.append('' +
-        '<div id="comment-box" class="alert alert-warning">Please <a class="alert-link" href="/accounts/login/">log in</a> to comment</div>'
+        '<div id="comment-box" class="alert alert-warning">Por favor <a class="alert-link" href="/accounts/login/">inicia sesión</a> para comentar</div>'
      )
 }
 
@@ -145,7 +145,7 @@ function ajax_vote(elem, post_id, vote_type) {
 
         },
         error: function () { // Hard failure, like network error
-            pop_over(elem, 'Unable to submit vote!', 'error');
+            pop_over(elem, '¡No se puede registrar tu voto!', 'error');
             toggle_button(elem, vote_type);
         }
     });
@@ -175,7 +175,7 @@ $(document).ready(function () {
 
         // Add the search functionality
         searchform.select2({
-            placeholder: "Live search: start typing...",
+            placeholder: "Búsqueda rápida: empieza a escribir...",
             minimumInputLength: 3,
             ajax: {
                 url: TITLE_SEARCH_URL,

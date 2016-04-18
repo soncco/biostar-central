@@ -1,0 +1,11 @@
+Actividad en un post que estás siguiendo en <a href="http://{{ site.domain }}">{{ site.name }}</a>
+<p>
+    El usuario <a href="http://{{ site.domain }}{{ user.get_absolute_url }}">{{ user.name }}</a> escribió <a href="http://{{ site.domain }}{{ post.get_absolute_url }}">{{ post.get_type_display }}: {{ post.root.get_title }}</a>:
+</p>
+<p>
+    {{ post.html|safe }}
+</p>
+<hr>
+<p style="color:#666666">
+    Puedes responder vía correo electrónico o visitar http://{{ site.domain }}{{ post.get_absolute_url }}
+</p>

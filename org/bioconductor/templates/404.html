@@ -1,0 +1,18 @@
+{% extends "starbase.html" %}
+{% load server_tags %}
+{% load humanize %}
+
+{% block page_title %}
+    404 No encontrado
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="alert alert-warning">
+                <h3>404 Error</h3>
+                La página <code>{{ request_path }}</code> no se encontró!
+            </div>
+        </div>
+    </div>
+{% endblock %}

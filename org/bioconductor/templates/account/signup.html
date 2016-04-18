@@ -1,0 +1,71 @@
+{% extends "starbase.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+    Crear una cuenta.
+{% endblock %}
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-6 col-md-offset-3">
+
+            <div class="panel panel-default" style="margin-top:2em">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title">Registro Social</h3>
+                </div>
+                <div class="panel-body">
+                    {% if socialaccount.providers %}
+                            <p>Click al nombre de tu proveedor para registrarse</p>
+                        <div class="socialaccount_ballot">
+                            <ul class="socialaccount_providers" style="font-size:1.6em;">
+                                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                            </ul>
+                        </div>
+                        {% include "socialaccount/snippets/login_extra.html" %}
+                    {% endif %}
+
+
+                    <div>
+                        Sólo es usado para registrarse, no tendremos acceso a tu timeline, ver tus amigos o publicar en tu lugar.
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <h3 class="panel-title">Registrarse con correo electŕonico</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <form role="form" class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                        {% csrf_token %}
+
+
+                        {{ form|crispy }}
+
+
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+
+                        <div>
+                            <button type="submit" class="btn btn-success">Registrarse &raquo;</button>
+
+                            <span class="btn btn-default pull-right">
+                                <a class="button" href="{% url 'account_login' %}">Iniciar sesión &raquo;</a>
+                            </span>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

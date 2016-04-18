@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Constants that may be used in multiple packages
 """
@@ -24,11 +25,11 @@ MESSAGING_TYPE_CHOICES = MESSAGING_MAP.items()
 
 # Connects a user sort dropdown word to a data model field.
 USER_SORT_MAP = OrderedDict([
-    ("recent visit", "-profile__last_login"),
-    ("reputation", "-score"),
-    ("date joined", "profile__date_joined"),
+    ("visitados recientemente", "-profile__last_login"),
+    ("reputación", "-score"),
+    ("fecha de ingreso", "profile__date_joined"),
     #("number of posts", "-score"),
-    ("activity level", "-activity"),
+    ("nivel de actividad", "-activity"),
 ])
 
 # These are the fields rendered in the user sort order drop down.
@@ -39,14 +40,14 @@ USER_SORT_INVALID_MSG = "Invalid sort parameter received"
 
 # Connects a post sort dropdown word to a data model field.
 POST_SORT_MAP = OrderedDict([
-    ("update", "-lastedit_date"),
-    ("views", "-view_count"),
-    ("followers", "-subs_count"),
-    ("answers", "-reply_count"),
-    ("bookmarks", "-book_count"),
-    ("votes", "-vote_count"),
-    ("rank", "-rank"),
-    ("creation", "-creation_date"),
+    ("actualizados", "-lastedit_date"),
+    ("vistas", "-view_count"),
+    ("seguidores", "-subs_count"),
+    ("respuestas", "-reply_count"),
+    ("favoritos", "-book_count"),
+    ("votos", "-vote_count"),
+    ("ranking", "-rank"),
+    ("creación", "-creation_date"),
 ])
 
 # These are the fields rendered in the post sort order drop down.
@@ -57,11 +58,11 @@ POST_SORT_INVALID_MSG = "Invalid sort parameter received"
 
 # Connects a word to a number of days
 POST_LIMIT_MAP = OrderedDict([
-    ("all time", 0),
-    ("today", 1),
-    ("this week", 7),
-    ("this month", 30),
-    ("this year", 365),
+    ("cualquiera", 0),
+    ("hoy", 1),
+    ("esta semana", 7),
+    ("este mes", 30),
+    ("este año", 365),
 
 ])
 
@@ -69,7 +70,7 @@ POST_LIMIT_MAP = OrderedDict([
 POST_LIMIT_FIELDS = POST_LIMIT_MAP.keys()
 POST_LIMIT_DEFAULT = POST_LIMIT_FIELDS[0]
 
-POST_LIMIT_INVALID_MSG = "Invalid limit parameter received"
+POST_LIMIT_INVALID_MSG = "Parámetro de límite inválido"
 
 
 def now():

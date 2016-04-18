@@ -1,0 +1,37 @@
+{% extends "starbase.html" %}
+{% load server_tags %}
+{% load humanize %}
+
+{% block page_title %}
+    Medalla: {{ badge.name }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3>Medalla: {{ badge.name }} <i class="{{ badge.icon }}"></i> &bull; <a
+                    href="{% url 'badge-list' %}">Todos &raquo;</a></h3>
+
+            <h4>Ganado {{ badge.count }} tiempo{{ badge.count|pluralize }} para: <em>{{ badge.desc }}</em></h4>
+
+            <h4>Recientemente dado a </h4>
+
+            {% for award in awards %}
+
+                <div class="col xs-3 col-md-2 text-center" style="height:250px;">
+                    <div>{% gravatar award.user 82 %}</div>
+                    <div class="ago">{{ award.date|time_ago }} a</div>
+                    <div class="uname">{% userlink award.user %}</div>
+                    <div class="loc">{{ award.user.profile.location }}</div>
+                    {% if award.context %}
+                        <div class="">Para: {{ award.context|safe }}</div>
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+{% endblock %}

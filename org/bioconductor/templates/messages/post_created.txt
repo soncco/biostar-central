@@ -1,0 +1,9 @@
+{{user.name}} Posteado {{post.get_type_display}}: "{{ post.root.get_title|safe }}":
+
+{{post.as_text|safe|truncatewords:150}}
+
+---
+Ver el post en: http://{{site.domain}}{{ post.get_absolute_url }}
+{% if post.is_toplevel %}Respondiendo este correo puedes responder
+{% else %}Respondiendo a este correo puedes postear un comentario para la respuesta.
+{% endif %}

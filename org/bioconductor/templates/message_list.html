@@ -1,0 +1,33 @@
+{% extends "starbase.html" %}
+{% load server_tags %}
+{% load humanize %}
+
+{% block content %}
+
+    {% search_bar %}
+
+    {% page_bar %}
+
+    <div class="row">
+        <div class="col-md-9">
+
+            {% for message in objects %}
+                <div class="stripe unread wrapped {{ message.unread }}">
+                    Hace {{ message.sent_at|timesince }}: {{ message.body.text|safe }}
+                </div>
+
+
+            {% endfor %}
+
+        </div>
+
+        <div class="col-md-3 sidebar">
+            <div class="head">Mensajes de</div>
+            {% sidebar_users people %}
+        </div>
+    </div>
+
+    {#  this will reset the user unread messages #}
+    {% messages_read user %}
+
+{% endblock %}
