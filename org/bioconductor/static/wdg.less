@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
+
+@color0: #f38630; // Appears 3 times
+@color1: #69d2e7; // Appears 3 times
+@color2: #535353; // Appears 3 times
+@color3: #f4f3a0; // Appears 2 times
+@color4: #c9ccb7; // Appears 2 times
+@color5: #e0e4cc; // Appears 2 times
+@color6: #ffffff; // Appears 2 times
+
+
+
+body {
+    color: #6f6f6f;
+    font: normal 14px/1.2em Raleway, sans-serif;
+}
+article {
+    padding: 0 0 20px 0;
+}
+.titulo {
+    font-size: 18px;
+    margin: 0;
+    padding-bottom: 6px;
+    a {
+        color: #5ebccf;
+    }
+}
+.no-padding-left {
+    padding-left: 0 !important;
+}
+.no-padding-right {
+    padding-right: 0 !important;
+}
+.no-margin {
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+.navbar-stack {
+    background: #fa6900;
+    border-bottom: 2px solid #e05e00;
+    border-radius: 0 !important;
+    .navbar-brand {
+        font-size: 30px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .navbar-nav {
+        .active {
+            background: @color0;
+        }
+        a {
+            &:hover {
+                background-color: @color0 !important;
+            }
+            &:focus {
+                background-color: @color0 !important;
+            }
+        }
+    }
+    li {
+        font-size: 16px;
+    }
+    a {
+        color: @color6;
+    }
+}
+.nav-pills {
+    li {
+        a {
+            background-color: #a7dbd8;
+            border-radius: 0;
+            color: @color6;
+            font-size: 14px;
+            &:hover {
+                background-color: @color1 !important;
+            }
+            &:active {
+                background-color: @color1 !important;
+            }
+        }
+    }
+    .active {
+        a {
+            background-color: @color1 !important;
+        }
+    }
+}
+.btn-tag {
+    background-color: @color5;
+    color: #5a5b51;
+    &:hover {
+        background-color: @color4;
+    }
+    &:active {
+        background-color: @color4;
+    }
+}
+.btn-badge {
+    background-color: #fffeb2;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    color: @color2;
+    &:hover {
+        background-color: @color3;
+        color: @color2;
+    }
+    &:active {
+        background-color: @color3;
+        color: @color2;
+    }
+}
+hr.hr {
+    border-color: @color5;
+}
+.pregunta-titulo {
+    color: #000000;
+}
+.contenido {
+    font-size: 14px;
+    line-height: 1.4em;
+}
+.btn {
+    border-radius: 0;
+}
+.badge-row {
+    margin-bottom: 10px;
+}
+.badge3 {
+    color: #cc9966;
+}
+.badge2 {
+    color: #9a9a9a;
+}
+.badge1 {
+    color: #ffcc00;
+}
