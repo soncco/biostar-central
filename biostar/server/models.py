@@ -122,7 +122,7 @@ def award_create_messages(sender, instance, created, *args, **kwargs):
         # Generate the message from the template.
         content = html.render(name=AWARD_CREATED_HTML_TEMPLATE, award=award, user=user)
 
-        subject = "Congratulations: you won %s" % award.badge.name
+        subject = "Felicidades: tu ganaste %s" % award.badge.name
 
         # Create the message body.
         body = MessageBody.objects.create(author=user, subject=subject, text=content)

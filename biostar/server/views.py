@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.views.generic import DetailView, ListView, TemplateView, UpdateView, View
 from django.conf import settings
 from biostar.apps.users import auth
@@ -39,7 +40,7 @@ def abspath(*args):
 
 class BaseListMixin(ListView):
     "Base class for each mixin"
-    page_title = "Title"
+    page_title = "Título"
     paginate_by = settings.PAGINATE_BY
 
     def get_title(self):
@@ -106,7 +107,7 @@ def posts_by_topic(request, topic):
     if topic == MYTAGS:
         # Get the posts that the user wrote.
         messages.success(request,
-                         'Posts matching the <b><i class="fa fa-tag"></i> My Tags</b> setting in your user profile')
+                         'Post que concuerdan con la sección <b><i class="fa fa-tag"></i> Mis Tags</b> de tu perfil')
         return Post.objects.tag_search(user.profile.my_tags)
 
     if topic == UNANSWERED:
@@ -115,7 +116,7 @@ def posts_by_topic(request, topic):
 
     if topic == FOLLOWING:
         # Get that posts that a user follows.
-        messages.success(request, 'Threads that will produce notifications.')
+        messages.success(request, 'Hilos que darán notificaciones.')
         return Post.objects.top_level(user).filter(subs__user=user)
 
     if topic == BOOKMARKS:
@@ -130,7 +131,7 @@ def posts_by_topic(request, topic):
         # Any type of topic.
         if topic:
             messages.info(request,
-                          "Showing: <code>%s</code> &bull; <a href='/'>reset</a>" % topic)
+                          "Mostrando: <code>%s</code> &bull; <a href='/'>resetear</a>" % topic)
         return Post.objects.tag_search(topic)
 
     # Return latest by default.
@@ -154,7 +155,7 @@ class PostList(BaseListMixin):
     template_name = "post_list.html"
     context_object_name = "posts"
     paginate_by = settings.PAGINATE_BY
-    LATEST = "Latest"
+    LATEST = "Últimos"
 
     def __init__(self, *args, **kwds):
         super(PostList, self).__init__(*args, **kwds)
@@ -163,9 +164,9 @@ class PostList(BaseListMixin):
 
     def get_title(self):
         if self.topic:
-            return "%s Posts" % self.topic
+            return "Posts con el tag %s" % self.topic
         else:
-            return "Latest Posts"
+            return "Últimos posts"
 
     def get_queryset(self):
         self.topic = self.kwargs.get("topic", "")
@@ -255,7 +256,7 @@ class VoteList(LoginRequiredMixin, ListView):
         people = [v.author for v in context[self.context_object_name]]
         random.shuffle(people)
         context['topic'] = self.topic
-        context['page_title'] = "Votes"
+        context['page_title'] = "Votos"
         context['people'] = people
         reset_counts(self.request, self.topic)
         return context
@@ -276,11 +277,11 @@ class UserList(ListView):
         self.limit = self.request.GET.get('limit', const.POST_LIMIT_DEFAULT)
 
         if self.sort not in const.USER_SORT_MAP:
-            messages.warning(self.request, "Warning! Invalid sort order!")
+            messages.warning(self.request, "Orden inválido")
             self.sort = const.USER_SORT_DEFAULT
 
         if self.limit not in const.POST_LIMIT_MAP:
-            messages.warning(self.request, "Warning! Invalid limit applied!")
+            messages.warning(self.request, "Límite inválido")
             self.limit = const.POST_LIMIT_DEFAULT
 
         # Apply the sort on users
@@ -289,7 +290,7 @@ class UserList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserList, self).get_context_data(**kwargs)
-        context['topic'] = "Users"
+        context['topic'] = "Usuarios"
 
         context['sort'] = self.sort
         context['limit'] = self.limit
@@ -333,7 +334,7 @@ class UserDetails(BaseDetailMixin):
             page = int(self.request.GET.get("page", 1))
             page_obj = paginator.page(page)
         except Exception, exc:
-            messages.error(self.request, "Invalid page number")
+            messages.error(self.request, "Número de página inválido")
             page_obj = paginator.page(1)
         context['page_obj'] = page_obj
         context['posts'] = page_obj.object_list
@@ -601,7 +602,7 @@ class FlatPageUpdate(UpdateView):
         logger.info("user %s edited %s" % (user, kwargs))
         if not self.request.user.is_admin:
             logger.error("user %s access denied on %s" % (user, kwargs))
-            messages.error(req, "Only administrators may edit that page")
+            messages.error(req, "Sólo los administradores pude editar esta página")
             return HttpResponseRedirect("/")
 
         return super(FlatPageUpdate, self).post(*args, **kwargs)

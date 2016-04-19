@@ -33,7 +33,7 @@ def init_awards():
 # Tries to award a badge to the user
 def check_user_profile(ip, user):
     import urllib2, json
-    logger.info("profile check from %s on %s" % (ip, user))
+    logger.info("chequeo de perfil %s en %s" % (ip, user))
     if not user.profile.location:
         try:
             url = "http://api.hostip.info/get_json.php?ip=%s" % ip
@@ -56,7 +56,7 @@ def create_user_award(user):
     from biostar.apps.badges.models import Badge, Award
     from biostar.apps.badges.award_defs import ALL_AWARDS
 
-    logger.info("award check for %s" % user)
+    logger.info("chequeo de premio en %s" % user)
 
     # Update user status.
     if (user.status == User.NEW_USER) and (user.score > 10):
@@ -102,5 +102,5 @@ def create_user_award(user):
 
             date = user.profile.last_login
             award = Award.objects.create(user=user, badge=badge, date=date, context=context)
-            logger.info("award %s created for %s" % (award.badge.name, user.email))
+            logger.info("premios %s creados para %s" % (award.badge.name, user.email))
 

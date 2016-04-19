@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -29,8 +30,8 @@ def ask_to_import_orcid_profile(request):
     Parameters:
     request - a `WSGIRequest`;
     """
-    messages.info(request, "Do you want to import your <i>Biography</i> and <i>Works</i> sections"
-                           " from ORCID? <a href='{}'>Yes</a>".format(reverse('orcid-import')))
+    messages.info(request, "¿Quiéres importar tu <i>Biografía</i> y <i>Trabajos</i>"
+                           " desde ORCID? <a href='{}'>Yes</a>".format(reverse('orcid-import')))
 
 
 @login_required
@@ -69,12 +70,12 @@ def import_bio(request):
         bio += '...'
     if bio:
         bio += '<br />'
-    txt = '<b>Biography</b><br />' + bio + txt
+    txt = '<b>Biografía</b><br />' + bio + txt
 
     # Add link to the original ORCID profile.
     profile_url = extract_from_dict(data, ['orcid-profile', 'orcid-identifier', 'uri'])
     if profile_url:
-        txt += "<a href='{}'>Full ORCID profile...</a>".format(profile_url)
+        txt += "<a href='{}'>Perfil completo de ORCID...</a>".format(profile_url)
 
     user.profile.info = txt
     user.profile.save()

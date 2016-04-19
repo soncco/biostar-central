@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'ialbert'
 import json, traceback, logging
 from braces.views import JSONResponseMixin
@@ -40,10 +41,10 @@ class ajax_error_wrapper(object):
     def __call__(self, request):
         try:
             if request.method != 'POST':
-                return ajax_error('POST method must be used.')
+                return ajax_error('POST debe ser usado.')
 
             if not request.user.is_authenticated():
-                return ajax_error('You must be logged in to do that')
+                return ajax_error('Debes estar logueado')
 
             value = self.f(request)
             return value
@@ -61,12 +62,12 @@ def perform_vote(post, user, vote_type):
     votes = Vote.objects.filter(author=user, post=post, type=vote_type)
     if votes:
         vote = votes[0]
-        msg = "%s removed" % vote.get_type_display()
+        msg = "%s quitado" % vote.get_type_display()
         change = -1
     else:
         change = +1
         vote = Vote.objects.create(author=user, post=post, type=vote_type)
-        msg = "%s added" % vote.get_type_display()
+        msg = "%s agregado" % vote.get_type_display()
 
     if post.author != user:
         # Update the user reputation only if the author is different.
@@ -118,13 +119,13 @@ def vote_handler(request):
     post = Post.objects.get(pk=post_id)
 
     if post.author == user and vote_type == Vote.UP:
-        return ajax_error("You can't upvote your own post.")
+        return ajax_error("No puedes votar tu propio post.")
 
     #if post.author == user and vote_type == Vote.ACCEPT:
     #    return ajax_error("You can't accept your own post.")
 
     if post.root.author != user and vote_type == Vote.ACCEPT:
-        return ajax_error("Only the person asking the question may accept this answer.")
+        return ajax_error("Sólo la persona que ha hecho la pregunta puede aceptar la respuesta.")
 
     with transaction.atomic():
         msg = perform_vote(post=post, user=user, vote_type=vote_type)

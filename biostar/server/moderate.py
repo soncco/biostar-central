@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Moderator views
 """
@@ -30,16 +31,16 @@ OPEN, CLOSE_OFFTOPIC, CLOSE_SPAM, DELETE, \
 from biostar.apps.util import now
 
 POST_LIMIT_ERROR_MSG = '''
-<p><b>Sorry!</b> Your posting limit of (%s) posts per six hours has been reached.</p>
-<p>This limit is very low for new users and is raised as you gain reputation.</p>
-<p>This limit is necessary to protect the site from automated postings by spammers.</p>
+<p><b>Lo sentimos!</b> Tu límite de (%s) posts por cada seis horas ha sido alcanzado.</p>
+<p>Este límite es muy pequeño para nuevos usuarios y crece ni bien ganas reputación.</p>
+<p>Este límite es necesario para proteger al sitio de posts automáticos.</p>
 '''
 
 TOP_POST_LIMIT_ERROR_MSG = '''
-<p><b>Sorry!</b> Your posting limit of (%s) questions per six hours has been reached.
-Note that you can still contribute with comments and answers though.</p>
-<p>This limit is very low for new users and is raised as you gain reputation.</p>
-<p>This limit is necessary to protect the site from automated postings by spammers.</p>
+<p><b>Lo sentimos!</b> Tu límite de (%s) posts por cada seis horas ha sido alcanzado.
+Sin embargo puedes contribuir con respuestas y comentarios.</p>
+<p>Este límite es muy pequeño para nuevos usuarios y crece ni bien ganas reputación.</p>
+<p>Este límite es necesario para proteger al sitio de posts automáticos.</p>
 '''
 
 def update_user_status(user):
@@ -74,37 +75,37 @@ def user_exceeds_limits(request, top_level=False):
     # Apply the limit checks.
     if (all_post_count + 1) > max_post_limit:
         messages.info(request, POST_LIMIT_ERROR_MSG % max_post_limit)
-        logger.error("post limit reached for %s" % user)
+        logger.error("límite de posts alcanzado para %s" % user)
         return True
 
     # This only needs to be checked when creating top level post
     if top_level and ((top_post_count + 1) > max_top_post_limit):
         messages.info(request, TOP_POST_LIMIT_ERROR_MSG % max_top_post_limit)
-        logger.error("top post limit reached for %s" % user)
+        logger.error("límite de posts alcanzado para %s" % user)
         return True
 
     return False
 
 class PostModForm(forms.Form):
     CHOICES = [
-        (OPEN, "Open a closed or deleted post"),
-        (TOGGLE_ACCEPT, "Toggle accepted status"),
-        (MOVE_TO_ANSWER, "Move post to an answer"),
-        (MOVE_TO_COMMENT, "Move post to a comment on the top level post"),
-        (DUPLICATE, "Duplicated post (top level)"),
-        (CROSSPOST, "Cross posted at other site"),
-        (CLOSE_OFFTOPIC, "Close post (top level)"),
-        (DELETE, "Delete post"),
+        (OPEN, "Abrir un post cerrado o borrado"),
+        (TOGGLE_ACCEPT, "Cambiar el estado de aceptado"),
+        (MOVE_TO_ANSWER, "Mover el post a la respuesta"),
+        (MOVE_TO_COMMENT, "Mover el post a un comentario del post"),
+        (DUPLICATE, "Duplicatar post (top level)"),
+        (CROSSPOST, "Cruzar el post a otro sitio"),
+        (CLOSE_OFFTOPIC, "Cerrar post (top level)"),
+        (DELETE, "Borrar post"),
     ]
 
-    action = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), label="Select Action")
+    action = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), label="Selecciona Acción")
 
     comment = forms.CharField(required=False, max_length=200,
-                              help_text="Enter a reason (required when closing, crosspost). This will be inserted into a template comment.")
+                              help_text="Ingresa una razón (requerido cuando se cierra o se cruza)")
 
     dupe = forms.CharField(required=False, max_length=200,
-                           help_text="One or more duplicated post numbers, space or comma separated (required for duplicate closing).",
-                           label="Duplicate number(s)")
+                           help_text="Uno o más números de posts duplicados, separados por espaicos o comas.",
+                           label="Número(s) duplicado(s)")
 
     def __init__(self, *args, **kwargs):
         pk = kwargs['pk']
@@ -118,13 +119,13 @@ class PostModForm(forms.Form):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Select moderation option',
+                'Seleccionar opción de moderación',
                 'action',
                 'comment',
                 'dupe',
             ),
             ButtonHolder(
-                Submit('submit', 'Submit')
+                Submit('submit', 'Enviar')
             )
         )
 
@@ -135,13 +136,13 @@ class PostModForm(forms.Form):
         dupe = cleaned_data.get("dupe")
 
         if action == CLOSE_OFFTOPIC and not comment:
-            raise forms.ValidationError("Unable to close. Please add a comment!")
+            raise forms.ValidationError("No se cerró. Por favor añade un comentario")
 
         if action == CROSSPOST and not comment:
-            raise forms.ValidationError("Please add URL into the comment!")
+            raise forms.ValidationError("Por favor añade un URL en el comentario")
 
         if action == DUPLICATE and not dupe:
-            raise forms.ValidationError("Unable to close duplicate. Please fill in the post numbers")
+            raise forms.ValidationError("No se cerró el duplicado, por favor ingresa los números de post")
 
         if dupe:
             dupe = dupe.replace(",", " ")
@@ -165,7 +166,7 @@ class PostModeration(LoginRequiredMixin, FormView):
         post = self.get_obj()
         post = post_permissions(request, post)
         if not post.is_editable:
-            messages.warning(request, "You may not moderate this post")
+            messages.warning(request, "No puedes moderar este post")
             return HttpResponseRedirect(post.root.get_absolute_url())
         form = self.form_class(pk=post.id)
         context = dict(form=form, post=post)
@@ -181,7 +182,7 @@ class PostModeration(LoginRequiredMixin, FormView):
         response = HttpResponseRedirect(post.root.get_absolute_url())
 
         if not post.is_editable:
-            messages.warning(request, "You may not moderate this post")
+            messages.warning(request, "No debes moderar este post")
             return response
 
         # Initialize the form class.
@@ -201,7 +202,7 @@ class PostModeration(LoginRequiredMixin, FormView):
 
         action = get('action')
         if action == (OPEN, TOGGLE_ACCEPT) and not user.is_moderator:
-            messages.error(request, "Only a moderator may open or toggle a post")
+            messages.error(request, "Sólo un moderador puede abrir o cambiar un post")
             return response
 
         if action == TOGGLE_ACCEPT and post.type == Post.ANSWER:
@@ -214,31 +215,31 @@ class PostModeration(LoginRequiredMixin, FormView):
 
         if action == MOVE_TO_ANSWER and post.type == Post.COMMENT:
             # This is a valid action only for comments.
-            messages.success(request, "Moved post to answer")
+            messages.success(request, "Mover post a respuesta")
             query.update(type=Post.ANSWER, parent=post.root)
             root.update(reply_count=F("reply_count") + 1)
             return response
 
         if action == MOVE_TO_COMMENT and post.type == Post.ANSWER:
             # This is a valid action only for answers.
-            messages.success(request, "Moved post to answer")
+            messages.success(request, "Mover post a respuesta")
             query.update(type=Post.COMMENT, parent=post.root)
             root.update(reply_count=F("reply_count") - 1)
             return response
 
         # Some actions are valid on top level posts only.
         if action in (CLOSE_OFFTOPIC, DUPLICATE) and not post.is_toplevel:
-            messages.warning(request, "You can only close or open a top level post")
+            messages.warning(request, "Sólo puedes cerrar o abrir un post de nivel superior")
             return response
 
         if action == OPEN:
             query.update(status=Post.OPEN)
-            messages.success(request, "Opened post: %s" % post.title)
+            messages.success(request, "Post abierto: %s" % post.title)
             return response
 
         if action in CLOSE_OFFTOPIC:
             query.update(status=Post.CLOSED)
-            messages.success(request, "Closed post: %s" % post.title)
+            messages.success(request, "Post cerrado: %s" % post.title)
             content = html.render(name="messages/offtopic_posts.html", user=post.author, comment=get("comment"), post=post)
             comment = Post(content=content, type=Post.COMMENT, parent=post, author=user)
             comment.save()
@@ -274,13 +275,13 @@ class PostModeration(LoginRequiredMixin, FormView):
             if delete_only:
                 # Deleted posts can be undeleted by re-opening them.
                 query.update(status=Post.DELETED)
-                messages.success(request, "Deleted post: %s" % post.title)
+                messages.success(request, "Post borrados: %s" % post.title)
                 response = HttpResponseRedirect(post.root.get_absolute_url())
             else:
                 # This will remove the post. Redirect depends on the level of the post.
                 url = "/" if post.is_toplevel else post.parent.get_absolute_url()
                 post.delete()
-                messages.success(request, "Removed post: %s" % post.title)
+                messages.success(request, "Post removidos: %s" % post.title)
                 response = HttpResponseRedirect(url)
 
             # Recompute post reply count
@@ -289,19 +290,18 @@ class PostModeration(LoginRequiredMixin, FormView):
             return response
 
         # By this time all actions should have been performed
-        messages.warning(request, "That seems to be an invalid action for that post. \
-                It is probably ok! Actions may be shown even when not valid.")
+        messages.warning(request, "Parece que se realizó una acción inválida para este post.")
         return response
 
 class UserModForm(forms.Form):
     CHOICES = [
-        (User.NEW_USER, "Reinstate as new user"),
-        (User.TRUSTED, "Reinstate as trusted user"),
-        (User.SUSPENDED, "Suspend user"),
-        (User.BANNED, "Ban user"),
+        (User.NEW_USER, "Reintegrar a un usuario nuevo"),
+        (User.TRUSTED, "Reintegrar a un usuario de confianza"),
+        (User.SUSPENDED, "Suspender usuario"),
+        (User.BANNED, "Banear usuario"),
     ]
 
-    action = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), label="Select Action")
+    action = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect(), label="Seleccionar Acción")
 
     def __init__(self, *args, **kwargs):
         pk = kwargs['pk']
@@ -315,11 +315,11 @@ class UserModForm(forms.Form):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Select action',
+                'Seleccionar acción',
                 'action',
             ),
             ButtonHolder(
-                Submit('submit', 'Submit')
+                Submit('submit', 'Enviar')
             )
         )
 
@@ -355,30 +355,30 @@ class UserModeration(LoginRequiredMixin, FormView):
         response = HttpResponseRedirect(target.get_absolute_url())
 
         if target.is_administrator:
-            messages.warning(request, "Cannot moderate an administrator")
+            messages.warning(request, "No puedes moderar a un administrador")
             return response
 
         if user == target:
-            messages.warning(request, "Cannot moderate yourself")
+            messages.warning(request, "No puedes moderarte a ti mismo")
             return response
 
         if not user.is_moderator:
-            messages.warning(request, "Only moderators have this permission")
+            messages.warning(request, "Sólo los moderadores tienen este permiso")
             return response
 
         if not target.is_editable:
-            messages.warning(request, "Target not editable by this user")
+            messages.warning(request, "No es editable por este usuario")
             return response
 
         form = self.form_class(request.POST, pk=target.id)
         if not form.is_valid():
-            messages.error(request, "Invalid user modification action")
+            messages.error(request, "Acción inválida")
             return response
 
         action = int(form.cleaned_data['action'])
 
         if action == User.BANNED and not user.is_administrator:
-            messages.error(request, "Only administrators may ban users")
+            messages.error(request, "Sólo administradores pueden banear usuarios")
             return response
 
         if action == User.BANNED and user.is_administrator:
@@ -389,7 +389,7 @@ class UserModeration(LoginRequiredMixin, FormView):
             # These can still be removed but via the admin interface
             # We do this to limit damage that a hacked admin account could do.
             if target.score > 3:
-                messages.error(request, "Target user has a high score and can only be banned via the admin interface")
+                messages.error(request, "El usuario tienen un score alto y sólo puede ser baneado mediante la interface de administrador")
                 return response
 
             # Remove badges that may have been earned by this user.
@@ -406,12 +406,12 @@ class UserModeration(LoginRequiredMixin, FormView):
             count = query.count()
             query.delete()
 
-            messages.success(request, "User banned, %s posts removed" % count)
+            messages.success(request, "Usuario baneado, %s post removidos" % count)
 
 
         # Apply the new status
         User.objects.filter(pk=target.id).update(status=action)
 
-        messages.success(request, 'Moderation completed')
+        messages.success(request, 'Moderación completa')
         return response
 

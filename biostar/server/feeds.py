@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import, print_function
 
 from django.contrib.syndication.views import Feed
@@ -35,8 +36,8 @@ class PlanetFeed(Feed):
     "Latest posts"
     link = "/"
     FEED_COUNT = 50
-    title = "%s Planet!" % SITE_NAME
-    description = "Latest 50 posts of the %s" % title
+    title = "¡%s Planeta!" % SITE_NAME
+    description = "Últimos 50 posts de %s" % title
 
     def item_title(self, item):
         try:
@@ -79,8 +80,8 @@ class PostBase(Feed):
 
 class LatestFeed(PostBase):
     "Latest posts"
-    title = "%s latest!" % SITE_NAME
-    description = "Latest 25 posts from the %s" % title
+    title = "!%s últimos!" % SITE_NAME
+    description = "Últimos 25 posts de %s" % title
 
     def items(self):
         # Delay posts hours.
@@ -101,10 +102,10 @@ class PostTypeFeed(PostBase):
 
     def description(self, obj):
         code, text = obj
-        return "Activity on posts  %s" % text
+        return "Actividad en los posts %s" % text
 
     def title(self, obj):
-        return "Post Activity"
+        return "Actividad de posts"
 
     def items(self, obj):
         codes, text = obj
@@ -117,10 +118,10 @@ class PostFeed(PostBase):
         return text
 
     def description(self, obj):
-        return "Activity on posts  %s" % obj
+        return "Actividad en los posts  %s" % obj
 
     def title(self, obj):
-        return "Post Activity"
+        return "Actividad de posts"
 
     def items(self, text):
         ids = split(text)
@@ -136,7 +137,7 @@ class TagFeed(PostBase):
         return ",".join(elems)
 
     def description(self, obj):
-        return "Posts that match  %s" % obj
+        return "Posts que coinciden con  %s" % obj
 
     def title(self, obj):
         return "Post Feed"
@@ -152,10 +153,10 @@ class UserFeed(PostBase):
         return text
 
     def description(self, obj):
-        return "Posts for users that match  %s" % obj
+        return "Posts de usuarios que coinciden con  %s" % obj
 
     def title(self, obj):
-        return "User Feed"
+        return "Feed del usuario"
 
     def items(self, text):
         ids = split(text)

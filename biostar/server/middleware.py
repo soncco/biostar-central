@@ -154,7 +154,7 @@ class Visit(object):
         # Suspended users are logged out immediately.
         if user.is_authenticated() and user.is_suspended:
             logout(request)
-            messages.error(request, 'Sorry, this account has been suspended. Please contact the administrators.')
+            messages.error(request, 'Lo sentimos,  esta cuenta ha sido suspendida. Por favor contacta a los administradores.')
 
         # Add attributes to anonymous users.
         if not user.is_authenticated():
@@ -164,7 +164,7 @@ class Visit(object):
 
             # Check external logins.
             if settings.EXTERNAL_AUTH and valid_external_login(request):
-                messages.success(request, "Login completed")
+                messages.success(request, "Login completo")
 
             # We do this to detect when an anonymous session turns into a logged in one.
             if ANON_USER not in session:

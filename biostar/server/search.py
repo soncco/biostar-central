@@ -53,7 +53,7 @@ class Search(BaseListMixin):
     template_name = "search/search.html"
     paginate_by = settings.PAGINATE_BY
     context_object_name = "results"
-    page_title = "Search"
+    page_title = "Buscar"
 
     def get_queryset(self):
         self.q = self.request.GET.get('q', '')

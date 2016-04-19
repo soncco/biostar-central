@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -11,7 +12,7 @@ from .utils import hash_answer
 
 class MathCaptchaField(forms.MultiValueField):
     default_error_messages = {
-        'invalid': "La inscripción está deshabilitada por el Spam"
+        'invalid': "La inscripción está deshabilitada por el Spam",
         'invalid_number': "Ingresa un número grande",
     }
 

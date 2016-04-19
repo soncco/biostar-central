@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import logging
 from datetime import datetime, timedelta
@@ -206,7 +207,7 @@ def compute_stats(date):
     try:
         return load_stats_from_file(start)
     except IOError:  # This will be FileNotFoundError in Python3.
-        logger.info('No stats file for {}.'.format(start))
+        logger.info('No hay un archivo de estadísticas para {}.'.format(start))
 
     query = Post.objects.filter
 
