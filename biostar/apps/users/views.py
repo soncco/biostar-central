@@ -1,4 +1,4 @@
-# Create your views here.
+# -*- coding: utf8 -*-
 from django.shortcuts import render_to_response
 from django.views.generic import TemplateView, DetailView, ListView, FormView, UpdateView
 from .models import User, Profile
@@ -22,36 +22,36 @@ logger = logging.getLogger(__name__)
 
 
 class UserEditForm(forms.Form):
-    name = forms.CharField(help_text="The name displayed on the site (required)")
+    name = forms.CharField(help_text="El nombre mostrado en el sitio (obligatorio)")
 
-    email = forms.EmailField(help_text="Your email, it will not be visible to other users (required)")
+    email = forms.EmailField(help_text="Tu correo electrónico, no será visible para otros usuarios (obligatorio)")
 
     location = forms.CharField(required=False,
-                               help_text="Country/City/Institution (recommended)")
+                               help_text="País/Ciudad/Institución (recomendado)")
 
     website = forms.URLField(required=False, max_length=100,
-                             help_text="The URL to your website (optional)")
+                             help_text="El URL de tu sitio (opcional)")
 
     twitter_id = forms.CharField(required=False, max_length=15,
-                                 help_text="Your twitter id (optional)")
+                                 help_text="Tu id de twitter (opcional)")
 
     scholar = forms.CharField(required=False, max_length=15,
-                              help_text="Your Google Scholar ID (optional)")
+                              help_text="Tu ID de Google Scholar (opcional)")
 
     my_tags = forms.CharField(max_length=100, required=False,
-                              help_text="Post with tags listed here will show up in the My Tags tab. Use a comma to separate tags. Add a <code>!</code> to remove a tag. Example: <code>galaxy, bed, solid!</code> (optional)")
+                              help_text="Posts con tags listados aquí se mostrarán en la pestaña Mis tags. Usa una coma para separar tags. Añade<code>!</code> Para quitar un tag. Ejemplo: <code>galaxy, bed, solid!</code> (opcional)")
 
     watched_tags = forms.CharField(max_length=100, required=False,
-                                   help_text="Get email when a post matching the tag is posted. Example: <code>minia, bedops, breakdancer, music</code>.")
+                                   help_text="Recibe un correo cuando un post concuerda con el tag que estás posteando. Ejemplo: <code>minia, bedops, breakdancer, music</code>.")
 
-    digest_prefs = forms.ChoiceField(required=True, choices=Profile.DIGEST_CHOICES, label="Email Digest",
-                                     help_text="(This feature is not working yet!). Sets the frequence of digest emails. A digest email is a summary of events on the site.")
+    digest_prefs = forms.ChoiceField(required=True, choices=Profile.DIGEST_CHOICES, label="Resumen por Correo",
+                                     help_text="(Aun no disponible). Establece la frecuencia del resumen por correo.")
 
-    message_prefs = forms.ChoiceField(required=True, choices=const.MESSAGING_TYPE_CHOICES, label="Notifications",
-                                      help_text="Default mode  sends you an email if you receive anwers to questions that you've posted.")
+    message_prefs = forms.ChoiceField(required=True, choices=const.MESSAGING_TYPE_CHOICES, label="Notificaciones",
+                                      help_text="El modo por defecto te envía un correo si recibes respuestas a lo que posteaste.")
 
-    info = forms.CharField(widget=forms.Textarea, required=False, label="Add some information about yourself",
-                           help_text="A brief description about yourself (recommended)")
+    info = forms.CharField(widget=forms.Textarea, required=False, label="Añade alguna información sobre ti",
+                           help_text="Una breve descripción tuya (recomendado)")
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
@@ -60,7 +60,7 @@ class UserEditForm(forms.Form):
         self.helper.help_text_inline = True
         self.helper.layout = Layout(
             Fieldset(
-                'Update your profile',
+                'Actualiza tu perfil',
                 Div(
                     Div('name', ),
                     Div('email', ),
@@ -80,7 +80,7 @@ class UserEditForm(forms.Form):
                     Div('watched_tags'),
                     Div('info'),
                     ButtonHolder(
-                        Submit('submit', 'Submit')
+                        Submit('submit', 'Enviar')
                     ),
                     css_class="col-md-12",
                 ),
@@ -104,7 +104,7 @@ class EditUser(LoginRequiredMixin, FormView):
         target = User.objects.get(pk=self.kwargs['pk'])
         target = auth.user_permissions(request=request, target=target)
         if not target.has_ownership:
-            messages.error(request, "Only owners may edit their profiles")
+            messages.error(request, "Sólo los dueños puede editar sus perfiles")
             return HttpResponseRedirect(reverse("home"))
 
         initial = {}
@@ -125,7 +125,7 @@ class EditUser(LoginRequiredMixin, FormView):
 
         # The essential authentication step.
         if not target.has_ownership:
-            messages.error(request, "Only owners may edit their profiles")
+            messages.error(request, "Sólo los dueños pueden editar sus perfiles")
             return HttpResponseRedirect(reverse("home"))
 
         form = self.form_class(request.POST)
@@ -134,7 +134,7 @@ class EditUser(LoginRequiredMixin, FormView):
 
             if User.objects.filter(email=f['email']).exclude(pk=request.user.id):
                 # Changing email to one that already belongs to someone else.
-                messages.error(request, "The email that you've entered is already registered to another user!")
+                messages.error(request, "El correo que ingresaste ya está siendo usado por otro usuario")
                 return render(request, self.template_name, {'form': form})
 
             # Valid data. Save model attributes and redirect.
@@ -147,7 +147,7 @@ class EditUser(LoginRequiredMixin, FormView):
             target.save()
             profile.add_tags(profile.watched_tags)
             profile.save()
-            messages.success(request, "Profile updated")
+            messages.success(request, "Perfil actualizado")
             return HttpResponseRedirect(self.get_success_url())
 
         # There is an error in the form.
@@ -191,11 +191,11 @@ class DigestForm(forms.Form):
         self.helper.help_text_inline = True
         self.helper.layout = Layout(
             Fieldset(
-                'Update your digest settings',
+                'Actualizar la configuración de resumen',
                 Div(
                     Div('digest_prefs', ),
                     ButtonHolder(
-                        Submit('submit', 'Submit')
+                        Submit('submit', 'Enviar')
                     ),
                     css_class="col-md-6",
                 ),
@@ -206,10 +206,10 @@ def unsubscribe(request, uuid):
 
     user = User.objects.filter(profile__uuid=uuid)
     if not user:
-        messages.error(request, 'Invalid user identifier.')
+        messages.error(request, 'Identificador inválido.')
     else:
         user[0].profile.digest_prefs = Profile.NO_DIGEST
-        messages.success(request, 'User unsubscribed.')
+        messages.success(request, 'Usuario desuscrito.')
 
     response = redirect(reverse("home"))
     return response
@@ -231,7 +231,7 @@ class DigestManager(LoginRequiredMixin, FormView):
             user = request.user
             user.profile.digest_prefs = int(form.cleaned_data['digest_prefs'])
             user.profile.save()
-            messages.success(request, 'Email frequency has been set to %s' % user.profile.get_digest_prefs_display())
+            messages.success(request, 'Frecuencia de correos ha sido establecido a %s' % user.profile.get_digest_prefs_display())
 
         return render(request, self.template_name, {'form': form})
 

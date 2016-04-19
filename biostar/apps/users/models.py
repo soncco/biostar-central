@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 import logging
 from django import forms
@@ -53,10 +54,10 @@ class LocalManager(UserManager):
 class User(AbstractBaseUser):
     # Class level constants.
     USER, MODERATOR, ADMIN, BLOG = range(4)
-    TYPE_CHOICES = [(USER, "User"), (MODERATOR, "Moderator"), (ADMIN, "Admin"), (BLOG, "Blog")]
+    TYPE_CHOICES = [(USER, "Usuario"), (MODERATOR, "Moderador"), (ADMIN, "Admin"), (BLOG, "Blog")]
 
     NEW_USER, TRUSTED, SUSPENDED, BANNED = range(4)
-    STATUS_CHOICES = ((NEW_USER, 'New User'), (TRUSTED, 'Trusted'), (SUSPENDED, 'Suspended'), (BANNED, 'Banned'))
+    STATUS_CHOICES = ((NEW_USER, 'Nuevo usuario'), (TRUSTED, 'De Confianza'), (SUSPENDED, 'Suspendido'), (BANNED, 'Baneado'))
 
     # Required by Django.
     USERNAME_FIELD = 'email'
@@ -65,7 +66,7 @@ class User(AbstractBaseUser):
 
     # Default information on every user.
     email = models.EmailField(verbose_name='Email', db_index=True, max_length=255, unique=True)
-    name = models.CharField(verbose_name='Name', max_length=255, default="", blank=False)
+    name = models.CharField(verbose_name='Nombre', max_length=255, default="", blank=False)
 
     # Fields used by the Django admin.
     is_active = models.BooleanField(default=True)
@@ -91,7 +92,7 @@ class User(AbstractBaseUser):
     activity = models.IntegerField(default=0)
 
     # Display next to a user name.
-    flair = models.CharField(verbose_name='Flair', max_length=15, default="")
+    flair = models.CharField(verbose_name='Talento', max_length=15, default="")
 
     # The site this users belongs to.
     site = models.ForeignKey(Site, null=True)
@@ -190,8 +191,8 @@ class Profile(models.Model):
     NO_DIGEST, DAILY_DIGEST, WEEKLY_DIGEST, MONTHLY_DIGEST = range(4)
     TYPE_CHOICES = const.MESSAGING_TYPE_CHOICES
 
-    DIGEST_CHOICES = [(NO_DIGEST, 'Never'), (DAILY_DIGEST, 'Daily'),
-                      (WEEKLY_DIGEST, 'Weekly'), (MONTHLY_DIGEST, 'Monthly')]
+    DIGEST_CHOICES = [(NO_DIGEST, 'Nunca'), (DAILY_DIGEST, 'Diario'),
+                      (WEEKLY_DIGEST, 'Semanal'), (MONTHLY_DIGEST, 'Mensual')]
     user = models.OneToOneField(User)
 
     # Globally unique id used to identify the user in a private feeds
@@ -307,7 +308,7 @@ class UserCreationForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
+            raise forms.ValidationError("Passwords no concuerdan")
         return password2
 
     def save(self, commit=True):
@@ -391,7 +392,7 @@ def user_create_messages(sender, instance, created, *args, **kwargs):
         authors = User.objects.filter(is_admin=True) or [user]
         author = authors[0]
 
-        title = "Welcome!"
+        title = "¡Bienvenido!"
         content = html.render(name=NEW_USER_WELCOME_TEMPLATE, user=user)
         body = MessageBody.objects.create(author=author, subject=title,
                                           text=content, sent_at=now())

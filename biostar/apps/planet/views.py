@@ -28,7 +28,7 @@ class BlogPostList(ListView):
         get = self.request.GET.get
         self.topic = 'planet'
         context = super(BlogPostList, self).get_context_data(**kwargs)
-        context['page_title'] = "Planet"
+        context['page_title'] = "Planeta"
         context['topic'] = self.topic
         context['limit'] = get('limit', '')
         context['q'] = get('q', '')

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class Badge(models.Model):
     BRONZE, SILVER, GOLD = range(3)
-    CHOICES = ((BRONZE, 'Bronze'), (SILVER, 'Silver'), (GOLD, 'Gold'))
+    CHOICES = ((BRONZE, 'Bronce'), (SILVER, 'Plata'), (GOLD, 'Oro'))
 
     # The name of the badge.
     name = models.CharField(max_length=50)

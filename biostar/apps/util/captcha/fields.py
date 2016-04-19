@@ -11,8 +11,8 @@ from .utils import hash_answer
 
 class MathCaptchaField(forms.MultiValueField):
     default_error_messages = {
-        'invalid': _('Form based signup is now disabled because of spam.'),
-        'invalid_number': _('Enter a whole number.'),
+        'invalid': "La inscripción está deshabilitada por el Spam"
+        'invalid_number': "Ingresa un número grande",
     }
 
     def __init__(self, *args, **kwargs):

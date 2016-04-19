@@ -18,7 +18,7 @@ def abspath(*args):
 
 class Blog(models.Model):
     "Represents a blog"
-    title = models.CharField(verbose_name='Blog Name', max_length=255, default="", blank=False)
+    title = models.CharField(verbose_name='Nombre del Blog', max_length=255, default="", blank=False)
     desc = models.TextField(default='', blank=True)
     feed = models.URLField()
     link = models.URLField()

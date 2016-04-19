@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from __future__ import print_function, unicode_literals, absolute_import, division
 import logging, datetime, string
 from django.db import models
@@ -132,16 +133,16 @@ class Post(models.Model):
 
     # Post statuses.
     PENDING, OPEN, CLOSED, DELETED = range(4)
-    STATUS_CHOICES = [(PENDING, "Pending"), (OPEN, "Open"), (CLOSED, "Closed"), (DELETED, "Deleted")]
+    STATUS_CHOICES = [(PENDING, "Pendiente"), (OPEN, "Abierto"), (CLOSED, "Cerrado"), (DELETED, "Borrado")]
 
     # Question types. Answers should be listed before comments.
     QUESTION, ANSWER, JOB, FORUM, PAGE, BLOG, COMMENT, DATA, TUTORIAL, BOARD, TOOL, NEWS = range(12)
 
     TYPE_CHOICES = [
-        (QUESTION, "Question"), (ANSWER, "Answer"), (COMMENT, "Comment"),
-        (JOB, "Job"), (FORUM, "Forum"), (TUTORIAL, "Tutorial"),
-        (DATA, "Data"), (PAGE, "Page"), (TOOL, "Tool"), (NEWS, "News"),
-        (BLOG, "Blog"), (BOARD, "Bulletin Board")
+        (QUESTION, "Pregunta"), (ANSWER, "Respuesta"), (COMMENT, "Comentario"),
+        (JOB, "Trabajo"), (FORUM, "Foro"), (TUTORIAL, "Tutorial"),
+        (DATA, "Data"), (PAGE, "Página"), (TOOL, "Herramienta"), (NEWS, "Noticia"),
+        (BLOG, "Blog"), (BOARD, "Tablón de anuncios")
     ]
 
     TOP_LEVEL = set((QUESTION, JOB, FORUM, PAGE, BLOG, DATA, TUTORIAL, TOOL, NEWS, BOARD))
@@ -418,7 +419,7 @@ class EmailSub(models.Model):
     """
     SUBSCRIBED, UNSUBSCRIBED = 0, 1
     TYPE_CHOICES = [
-        (SUBSCRIBED, "Subscribed"), (UNSUBSCRIBED, "Unsubscribed"),
+        (SUBSCRIBED, "Suscrito"), (UNSUBSCRIBED, "Sin suscripción"),
 
     ]
     email = models.EmailField()
@@ -444,7 +445,7 @@ class EmailEntry(models.Model):
     sent_at = models.DateTimeField(null=True, blank=True)
 
     # The date the email was sent
-    status = models.IntegerField(choices=((DRAFT, "Draft"), (PUBLISHED, "Published")))
+    status = models.IntegerField(choices=((DRAFT, "Borrador"), (PUBLISHED, "Publicado")))
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -471,7 +472,7 @@ class PostView(models.Model):
 class Vote(models.Model):
     # Post statuses.
     UP, DOWN, BOOKMARK, ACCEPT = range(4)
-    TYPE_CHOICES = [(UP, "Upvote"), (DOWN, "DownVote"), (BOOKMARK, "Bookmark"), (ACCEPT, "Accept")]
+    TYPE_CHOICES = [(UP, "Voto"), (DOWN, "Negativo"), (BOOKMARK, "Bookmark"), (ACCEPT, "Aceptar")]
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     post = models.ForeignKey(Post, related_name='votes')
@@ -504,10 +505,10 @@ class Subscription(models.Model):
     class Meta:
         unique_together = (("user", "post"),)
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), db_index=True)
-    post = models.ForeignKey(Post, verbose_name=_("Post"), related_name="subs", db_index=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Usuario", db_index=True)
+    post = models.ForeignKey(Post, verbose_name="Post", related_name="subs", db_index=True)
     type = models.IntegerField(choices=MESSAGING_TYPE_CHOICES, default=LOCAL_MESSAGE, db_index=True)
-    date = models.DateTimeField(_("Date"), db_index=True)
+    date = models.DateTimeField("Fecha", db_index=True)
 
     objects = SubscriptionManager()
 

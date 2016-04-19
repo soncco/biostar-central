@@ -1,4 +1,4 @@
-# Create your views here.
+# -*- coding: utf8 -*-
 from django.shortcuts import render_to_response
 from django.views.generic import TemplateView, DetailView, ListView, FormView, UpdateView
 from .models import Post
@@ -47,26 +47,26 @@ def valid_title(text):
     "Validates form input for tags"
     text = text.strip()
     if not text:
-        raise ValidationError('Please enter a title')
+        raise ValidationError('Por favor ingresa un título')
 
     if len(text) < 10:
-        raise ValidationError('The title is too short')
+        raise ValidationError('El título es muy corto')
 
     words = text.split(" ")
     if len(words) < 3:
-        raise ValidationError('More than two words please.')
+        raise ValidationError('Más de dos palabras por favor.')
 
 
 def valid_tag(text):
     "Validates form input for tags"
     text = text.strip()
     if not text:
-        raise ValidationError('Please enter at least one tag')
+        raise ValidationError('Ingresa por lo menos un tag')
     if len(text) > 50:
-        raise ValidationError('Tag line is too long (50 characters max)')
+        raise ValidationError('El tag line es muy grande (50 caracteres máx.)')
     words = text.split(",")
     if len(words) > 5:
-        raise ValidationError('You have too many tags (5 allowed)')
+        raise ValidationError('Tienes muchos tags (5 permitidos)')
 
 class PagedownWidget(forms.Textarea):
     TEMPLATE = "pagedown_widget.html"
@@ -82,30 +82,30 @@ class PagedownWidget(forms.Textarea):
 class LongForm(forms.Form):
     FIELDS = "title content post_type tag_val".split()
 
-    POST_CHOICES = [(Post.QUESTION, "Question"),
-                    (Post.JOB, "Job Ad"),
-                    (Post.TUTORIAL, "Tutorial"), (Post.TOOL, "Tool"),
-                    (Post.FORUM, "Forum"), (Post.NEWS, "News"),
-                    (Post.BLOG, "Blog"), (Post.PAGE, "Page")]
+    POST_CHOICES = [(Post.QUESTION, "Pregunta"),
+                    (Post.JOB, "Oferta de trabajo"),
+                    (Post.TUTORIAL, "Tutorial"), (Post.TOOL, "Herramienta"),
+                    (Post.FORUM, "Foro"), (Post.NEWS, "Noticias"),
+                    (Post.BLOG, "Blog"), (Post.PAGE, "Página")]
 
     title = forms.CharField(
-        label="Post Title",
+        label="Título del post",
         max_length=200, min_length=10, validators=[valid_title, english_only],
-        help_text="Descriptive titles promote better answers.")
+        help_text="Títulos descriptivos promueven mejores respuestas.")
 
     post_type = forms.ChoiceField(
-        label="Post Type",
-        choices=POST_CHOICES, help_text="Select a post type: Question, Forum, Job, Blog")
+        label="Tipo de post",
+        choices=POST_CHOICES, help_text="Selecciona un tipo de Post: Pregunta, Foro, Trabajo, Blog")
 
     tag_val = forms.CharField(
         label="Post Tags",
         required=True, validators=[valid_tag],
-        help_text="Choose one or more tags to match the topic. To create a new tag just type it in and press ENTER.",
+        help_text="Escoje uno o más tags que concuerden con el tema. Para crear un tag nuevo sólo escribelo y presiona INTRO.",
     )
 
     content = forms.CharField(widget=PagedownWidget, validators=[valid_language],
                               min_length=80, max_length=15000,
-                              label="Enter your post below")
+                              label="Ingresa el post abajo")
 
     def __init__(self, *args, **kwargs):
         super(LongForm, self).__init__(*args, **kwargs)
@@ -113,14 +113,14 @@ class LongForm(forms.Form):
         self.helper.form_class = "post-form"
         self.helper.layout = Layout(
             Fieldset(
-                'Post Form',
+                'Post',
                 Field('title'),
                 Field('post_type'),
                 Field('tag_val'),
                 Field('content'),
             ),
             ButtonHolder(
-                Submit('submit', 'Submit')
+                Submit('submit', 'Enviar')
             )
         )
 
@@ -139,7 +139,7 @@ class ShortForm(forms.Form):
                 'content',
             ),
             ButtonHolder(
-                Submit('submit', 'Submit')
+                Submit('submit', 'Enviar')
             )
         )
 
@@ -159,18 +159,18 @@ def external_post_handler(request):
     name = request.REQUEST.get("name")
 
     if not name:
-        messages.error(request, "Incorrect request. The name parameter is missing")
+        messages.error(request, "Request incorrecto. No se encuentra el parámetro nombre")
         return HttpResponseRedirect(home)
 
     try:
         secret = dict(settings.EXTERNAL_AUTH).get(name)
     except Exception, exc:
         logger.error(exc)
-        messages.error(request, "Incorrect EXTERNAL_AUTH settings, internal exception")
+        messages.error(request, "EXTERNAL_AUTH incorrecto, error interno")
         return HttpResponseRedirect(home)
 
     if not secret:
-        messages.error(request, "Incorrect EXTERNAL_AUTH, no KEY found for this name")
+        messages.error(request, "EXTERNAL_AUTH incorrecto, No hay una KEY para el nombre dado")
         return HttpResponseRedirect(home)
 
     content = request.REQUEST.get("content")
@@ -278,7 +278,7 @@ class NewAnswer(LoginRequiredMixin, FormView):
         try:
             parent = Post.objects.get(pk=pid)
         except ObjectDoesNotExist, exc:
-            messages.error(request, "The post does not exist. Perhaps it was deleted")
+            messages.error(request, "El post no existe. Quizás fue borrado")
             return HttpResponseRedirect("/")
 
         # Validating the form.
@@ -321,7 +321,7 @@ class EditPost(LoginRequiredMixin, FormView):
 
         # Check and exit if not a valid edit.
         if not post.is_editable:
-            messages.error(request, "This user may not modify the post")
+            messages.error(request, "Este usuario no puede modificar el post")
             return HttpResponseRedirect(reverse("home"))
 
         initial = dict(title=post.title, content=post.content, post_type=post.type, tag_val=post.tag_val)
@@ -341,12 +341,12 @@ class EditPost(LoginRequiredMixin, FormView):
         # For historical reasons we had posts with iframes
         # these cannot be edited because the content would be lost in the front end
         if "<iframe" in post.content:
-            messages.error(request, "This post is not editable because of an iframe! Contact if you must edit it")
+            messages.error(request, "Este post no es editable porque está un iframe. Contáctate si quiere editarlo")
             return HttpResponseRedirect(post.get_absolute_url())
 
         # Check and exit if not a valid edit.
         if not post.is_editable:
-            messages.error(request, "This user may not modify the post")
+            messages.error(request, "Este usuario no edita este post")
             return HttpResponseRedirect(post.get_absolute_url())
 
         # Posts with a parent are not toplevel
@@ -377,7 +377,7 @@ class EditPost(LoginRequiredMixin, FormView):
         post.lastedit_user = request.user
         post.lastedit_date = datetime.utcnow().replace(tzinfo=utc)
         post.save()
-        messages.success(request, "Post updated")
+        messages.success(request, "Post actualizado")
 
         return HttpResponseRedirect(post.get_absolute_url())
 

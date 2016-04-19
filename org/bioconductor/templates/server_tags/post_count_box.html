@@ -54,14 +54,14 @@
 
             <span class="tags tag-pad visible-lg visible-md">
             {% for tag in post.tag_set.all %}
-                <a class="tag" href="/t/{{ tag.name }}/">{{ tag.name }}</a>
+                <a class="tag btn btn-tag" href="/t/{{ tag.name }}/">{{ tag.name }}</a>
             {% endfor %}
             </span>
             <span class="userlink text-right muted">
             escrito hace {{ post.creation_date|time_ago }} por {% userlink post.author %}
                 {% if post.author != post.lastedit_user %}
                     &bull; actualizado hace 
-                    <span class="ago2">{{ post.lastedit_date|time_ago }}</span> by
+                    <span class="ago2">{{ post.lastedit_date|time_ago }}</span> por
                     {% userlink post.lastedit_user %}
                 {% endif %}
             </span>

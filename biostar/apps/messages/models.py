@@ -33,11 +33,11 @@ class MessageBody(models.Model):
     """
     MAX_SIZE = 120
 
-    text = models.TextField(_("Text"))
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
-    subject = models.CharField(_("Subject"), max_length=MAX_SIZE)
-    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name=_("Parent message"))
-    sent_at = models.DateTimeField(_("sent at"), null=False)
+    text = models.TextField("Texto")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_messages', verbose_name="Remitente")
+    subject = models.CharField("Asunto", max_length=MAX_SIZE)
+    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name="Mensaje padre")
+    sent_at = models.DateTimeField("enviado el", null=False)
 
     objects = MessageManager()
 
@@ -56,8 +56,8 @@ from biostar.const import LOCAL_MESSAGE, MESSAGING_TYPE_CHOICES
 # Connects user to message bodies
 class Message(models.Model):
     "Connects recipents to sent messages"
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='recipients', verbose_name=_("Recipient"))
-    body = models.ForeignKey(MessageBody, related_name='messages', verbose_name=_("Message"))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='recipients', verbose_name="Destinatario")
+    body = models.ForeignKey(MessageBody, related_name='messages', verbose_name="Mensaje")
     type = models.IntegerField(choices=MESSAGING_TYPE_CHOICES, default=LOCAL_MESSAGE, db_index=True)
     unread = models.BooleanField(default=True)
     sent_at = models.DateTimeField(db_index=True, null=True)
