@@ -92,7 +92,7 @@ class PostModForm(forms.Form):
         (TOGGLE_ACCEPT, "Cambiar el estado de aceptado"),
         (MOVE_TO_ANSWER, "Mover el post a la respuesta"),
         (MOVE_TO_COMMENT, "Mover el post a un comentario del post"),
-        (DUPLICATE, "Duplicatar post (top level)"),
+        (DUPLICATE, "Duplicar post (top level)"),
         (CROSSPOST, "Cruzar el post a otro sitio"),
         (CLOSE_OFFTOPIC, "Cerrar post (top level)"),
         (DELETE, "Borrar post"),
@@ -119,7 +119,7 @@ class PostModForm(forms.Form):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Seleccionar opción de moderación',
+                u'Seleccionar opción de moderación',
                 'action',
                 'comment',
                 'dupe',
@@ -295,8 +295,8 @@ class PostModeration(LoginRequiredMixin, FormView):
 
 class UserModForm(forms.Form):
     CHOICES = [
-        (User.NEW_USER, "Reintegrar a un usuario nuevo"),
-        (User.TRUSTED, "Reintegrar a un usuario de confianza"),
+        (User.NEW_USER, "Hacerle usuario nuevo"),
+        (User.TRUSTED, "Hacerle usuario de confianza"),
         (User.SUSPENDED, "Suspender usuario"),
         (User.BANNED, "Banear usuario"),
     ]
@@ -315,7 +315,7 @@ class UserModForm(forms.Form):
 
         self.helper.layout = Layout(
             Fieldset(
-                'Seleccionar acción',
+                u'Seleccionar acción',
                 'action',
             ),
             ButtonHolder(

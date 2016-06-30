@@ -23,8 +23,13 @@
             {% page_bar %}
         </div>
         <div class="col-md-3 sidebar">
-            <div class="head">Personas que votaron en tu post</div>
-            {% sidebar_users people %}
+            <div class="panel panel-warning">
+                <div class="panel-heading">Personas que votaron en tu post</div>
+                <div class="panel-body">
+                    {% sidebar_users people %}        
+                </div>
+            </div>
+            
 
         </div>
     </div>

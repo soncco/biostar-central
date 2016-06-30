@@ -11,7 +11,7 @@ See the biostar.style.less file for details.
 
 body {
   font-size: 13px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  //font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -93,7 +93,7 @@ sup {
 }
 
 .post-title {
-  font-family: arial, verdana, helvetica, sans-serif;
+  //font-family: arial, verdana, helvetica, sans-serif;
   color: #333333;
   font-size: 18px;
   font-weight: normal;
@@ -252,7 +252,8 @@ table#posts {
 // Default post row colors.
 .post-row {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: @ANSWERED_POST;
     color: white;
   }
@@ -267,7 +268,8 @@ table#posts {
     color: #E1E818;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: @UNANSWERED_POST;
     color: white;
   }
@@ -279,12 +281,14 @@ table#posts {
 
 .post-row.Tool {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: #265040;
     color: white;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: #265040;
     color: white;
   }
@@ -292,12 +296,14 @@ table#posts {
 
 .post-row.News {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: #762C90;
     color: white;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: #762C90;
     color: white;
   }
@@ -305,12 +311,14 @@ table#posts {
 
 .post-row.Tutorial {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: #2C7990;
     color: white;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: #2C7990;
     color: white;
   }
@@ -318,7 +326,8 @@ table#posts {
 
 .post-row.Forum {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: @DEFAULT_FORUM;
     color: white;
   }
@@ -333,7 +342,8 @@ table#posts {
     color: yellow;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: @DEFAULT_FORUM;
     color: white;
   }
@@ -341,7 +351,8 @@ table#posts {
 
 .post-row.Job {
 
-  .answered {
+  .answered,
+  .respondido {
     background-color: @DEFAULT_JOB;
     color: white;
   }
@@ -355,7 +366,8 @@ table#posts {
     color: yellow;
   }
 
-  .unanswered {
+  .unanswered,
+  .sin.responder {
     background-color: @DEFAULT_JOB;
     color: white;
   }
@@ -655,9 +667,9 @@ div#navbar {
 
   ul {
     //list-style: none;
-    margin-left: -20px;
+    //margin-left: -20px;
     li {
-      margin-bottom: 2px;
+      //margin-bottom: 2px;
     }
   }
 }

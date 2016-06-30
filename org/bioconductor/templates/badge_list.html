@@ -18,7 +18,7 @@
                 {% for badge in badges %}
                     <tr>
                         <td>
-                            <a href="{% url 'badge-view' pk=badge.id %}" class="tag btn btn-tag">
+                            <a href="{% url 'badge-view' pk=badge.id %}" class="tag btn btn-badge">
                                 {{ badge.name }} <i class="{{ badge.icon }}"></i></a> &times; {{ badge.count }}
                         </td>
                         <td>

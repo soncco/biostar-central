@@ -2,17 +2,21 @@
 {% load server_tags %}
 
 {% cache 120 "recent-locations" %}
-    <div class="head">Ubicaciones recientes &bull;
-    <a href="{% url 'user-list' %}">Todos &raquo;</a></div>
-    <div class="recent-posts">
-        <ul>
+    <div class="panel panel-info">
+        <div class="panel-heading">Ubicaciones recientes</div>
+<ul class="list-group">
             {% for user in users %}
                 {% if user.profile.location %}
-                    <li>
+                    <li class="list-group-item">
                         {{ user.profile.location }}, <span class="subtle">{{ user.profile.last_login|time_ago }}</span>
                     </li>
                 {% endif %}
             {% endfor %}
         </ul>
+        <div class="panel-footer">
+             &bull;
+    <a href="{% url 'user-list' %}">Todos &raquo;</a>
+        </div>
     </div>
+
 {% endcache %}

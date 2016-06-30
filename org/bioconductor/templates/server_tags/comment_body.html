@@ -3,7 +3,7 @@
 <div class="entry {{ post.get_status_display }}  clearfix">
 
     <div class="comment vote-box" data-post_id="{{ post.id }}">
-        <div class="vote mark {{ post.has_upvote|on }} " data-type="vote" title="Upvote!">
+        <div class="vote mark {{ post.has_upvote|on }} " data-type="vote" title="¡Votar!">
             <i class="fa fa-thumbs-o-up fa-1x"></i></div>
         <div class="count">{{ post.vote_count|show_nonzero }}</div>
     </div>

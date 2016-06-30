@@ -2,11 +2,11 @@
 {% load cache %}
 
 {% cache 240 "recent-posts" %}
-    <div class="head">Respuestas recientes</div>
-    <div class="recent-posts">
-        <ul>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Respuestas recientes</div>
+        <ul class="list-group">
             {% for post in posts %}
-                <li>
+                <li class="list-group-item">
                     <a href="{{ post.get_absolute_url }}">{{ post.title }}</a> por <a
                         href="{{ post.author.get_absolute_url }}">{% userlink post.author %}</a>
 

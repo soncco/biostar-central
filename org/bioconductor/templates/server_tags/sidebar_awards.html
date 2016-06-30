@@ -2,15 +2,19 @@
 {% load server_tags %}
 
 {% cache 200 "recent-awards" %}
-    <div class="head">Premios recientes &bull; <a href="{% url 'badge-list' %}">Todos &raquo;</a></div>
-    <div class="recent-awards">
-        <ul>
+    <div class="panel panel-success">
+        <div class="panel-heading">Premios recientes </div>
+
+        <ul class="list-group">
             {% for award in awards %}
-                <li>
+                <li class="list-group-item">
                     <a href="{% url "badge-view" award.badge.id %}">{{ award.badge.name }} <i class="{{ award.badge.icon }}"></i></a>
                       a {% userlink award.user %}
                 </li>
             {% endfor %}
         </ul>
+        <div class="panel-footer">
+            &bull; <a href="{% url 'badge-list' %}">Todos &raquo;</a>
+        </div>
     </div>
 {% endcache %}

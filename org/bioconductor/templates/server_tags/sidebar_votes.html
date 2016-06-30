@@ -1,14 +1,15 @@
 {%  load cache %}
 
 {% cache 120 "recent-votes" %}
-<div class="head">Votos recientes</div>
-<div class="recent-votes">
-    <ul style="opacity: 0.8;">
-        {% for vote in votes %}
-            <li><a href="{{ vote.post.get_absolute_url }}">
-                {{ vote.post.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="panel panel-warning">
+    <div class="panel-heading">Votos recientes</div>
+    <ul class="list-group">
+            {% for vote in votes %}
+                <li class="list-group-item"><a href="{{ vote.post.get_absolute_url }}">
+                    {{ vote.post.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
 </div>
+
 {%  endcache %}

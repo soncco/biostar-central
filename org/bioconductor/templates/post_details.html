@@ -98,15 +98,14 @@
         </div>
         <div class="col-xs-12 col-md-3 sidebar">
             {% cache 600 "similar" post.id %}
-                <h4>Posts similares &bull; <a href="{% url 'search-page' %}">Buscar &raquo;</a></h4>
-
-                {% more_like_this post as related limit 25 %}
-
-                <ul class="more-like-this">
+                <div class="panel-warning">
+                    <div class="panel-heading">Posts similares</div>
+                    {% more_like_this post as related limit 25 %}
+                    <ul class="list-group">
                     {% for row in related %}
                         {% with row.object as post %}
                             {% if post.is_toplevel %}
-                                <li>
+                                <li class="list-group-item">
                                     <a href="{{ post.get_absolute_url }}">{{ post.title }} </a>
 
                                     <div class="peek">{{ post.peek|truncatechars:100 }}</div>
@@ -120,10 +119,18 @@
 
                         {% include "banners/sidebar.html" %}
 
-                        <li>Nada parecido aun.</li>
+                        <li class="list-group-item">Nada parecido aun.</li>
 
                     {% endfor %}
                 </ul>
+                <div class="panel-footer">
+                    &bull; <a href="{% url 'search-page' %}">Buscar &raquo;</a>                    
+                </div>
+                </div>
+
+                
+
+                
             {% endcache %}
         </div>
     </div>

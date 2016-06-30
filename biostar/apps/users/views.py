@@ -104,7 +104,7 @@ class EditUser(LoginRequiredMixin, FormView):
         target = User.objects.get(pk=self.kwargs['pk'])
         target = auth.user_permissions(request=request, target=target)
         if not target.has_ownership:
-            messages.error(request, "Sólo los dueños puede editar sus perfiles")
+            messages.error(request, u"Sólo los dueños puede editar sus perfiles")
             return HttpResponseRedirect(reverse("home"))
 
         initial = {}

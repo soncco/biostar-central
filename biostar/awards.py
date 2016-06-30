@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from __future__ import absolute_import
 from django.conf import settings
 
@@ -26,7 +27,8 @@ def init_awards():
             badge.save()
 
         if created:
-            logger.info("initializing badge %s" % badge)
+            pass
+            #logger.info("initializing badge %s" % badge)
 
 
 @app.task
